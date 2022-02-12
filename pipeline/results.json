@@ -1,0 +1,92 @@
+{
+    "total_items": 1,
+    "page_count": 1,
+    "items": [
+        {
+            "landing_id": "su550iaghu3vzd3avnsu55003m5xvika",
+            "token": "su550iaghu3vzd3avnsu55003m5xvika",
+            "response_id": "su550iaghu3vzd3avnsu55003m5xvika",
+            "landed_at": "2022-02-12T11:10:32Z",
+            "submitted_at": "2022-02-12T11:11:01Z",
+            "metadata": {
+                "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36",
+                "platform": "other",
+                "referer": "https://qj4ynhup70f.typeform.com/to/K43EfCnQ",
+                "network_id": "aa4ac6cdfd",
+                "browser": "default"
+            },
+            "hidden": {},
+            "calculated": {
+                "score": 0
+            },
+            "answers": [
+                {
+                    "field": {
+                        "id": "Rpdhu9ZuTH9T",
+                        "ref": "d1d91e2b1ad344dc",
+                        "type": "multiple_choice"
+                    },
+                    "type": "choice",
+                    "choice": {
+                        "id": "IqjTJkKzFqJ7",
+                        "ref": "606ceff3-99b9-49a9-8a44-b09a7f7d8faf",
+                        "label": "Answer A"
+                    }
+                },
+                {
+                    "field": {
+                        "id": "ttwc4KYtrON8",
+                        "ref": "7e647f516276dbf5",
+                        "type": "multiple_choice"
+                    },
+                    "type": "choice",
+                    "choice": {
+                        "id": "RZcsrTYgAYGP",
+                        "ref": "92462a3cb93d2f4d",
+                        "label": "45 to 54"
+                    }
+                },
+                {
+                    "field": {
+                        "id": "C6TUVjVyg1uf",
+                        "ref": "6860c08a381869f7",
+                        "type": "dropdown"
+                    },
+                    "type": "text",
+                    "text": "Spain"
+                },
+                {
+                    "field": {
+                        "id": "vLKXU8oBZigH",
+                        "ref": "53e749c923295967",
+                        "type": "rating"
+                    },
+                    "type": "number",
+                    "number": 3
+                },
+                {
+                    "field": {
+                        "id": "QjPPcX2j02xa",
+                        "ref": "79bbd17cee403288",
+                        "type": "picture_choice"
+                    },
+                    "type": "choices",
+                    "choices": {
+                        "ids": [
+                            "4iNYB6CRfxKv",
+                            "ICRvB0A6oqTp"
+                        ],
+                        "refs": [
+                            "894436f101bb7c35",
+                            "7487886be2a4447f"
+                        ],
+                        "labels": [
+                            "Walking",
+                            "Train"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

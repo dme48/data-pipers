@@ -1,15 +1,14 @@
 import json
+import pandas as pd
 from typeform import Typeform
-from utils import read_question_ids, read_token, extract_answers
+from utils import read_field_ids, read_token, extract_answers
 
-ids_to_questions = read_question_ids()
+ids_to_fields = read_field_ids()
 token = read_token()
 
 responses = Typeform(token).responses
-result: dict = responses.list('K43EfCnQ')
+query_result: dict = responses.list('K43EfCnQ')
 
-bare_answers = {i: [] for i in range(len(ids_to_questions))}
+answers = extract_answers(query_result, ids_to_fields)
 
-for response in result["items"]:
-    answers = extract_answers(response)
-    print(answers)
+dataframe = pd.DataFrame.from_dict(answers)

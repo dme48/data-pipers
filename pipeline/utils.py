@@ -3,7 +3,7 @@ import json
 from typing import Iterable
 
 
-def read_question_ids(filename: str = "question_ids.json"):
+def read_field_ids(filename: str = "question_ids.json"):
     """Reads the file (filename) and returns it as a dictionary"""
     with open(filename, "r") as json_file:
         question_ids = json.load(json_file)

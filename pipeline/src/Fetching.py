@@ -1,4 +1,5 @@
 """Functions related to the gathering of data from online forms"""
+import os
 import json
 import pandas as pd
 from typing import Iterable
@@ -22,14 +23,16 @@ def fetch_typeform(login_filename: str = "login",
 
 def read_field_ids(filename: str):
     """Reads the file (filename) and returns it as a dictionary"""
-    with open(filename, "r") as json_file:
+    path = os.path.dirname(os.path.realpath(__file__)) + "/" + filename
+    with open(path, "r") as json_file:
         question_ids = json.load(json_file)
     return question_ids
 
 
 def read_login(filename: str):
     """Reads the login file (filename) and returns the token and the form ID"""
-    with open(filename, "r") as f:
+    path = os.path.dirname(os.path.realpath(__file__)) + "/" + filename
+    with open(path, "r") as f:
         login_fields = f.read().split("\n")
     return login_fields[0:2]
 

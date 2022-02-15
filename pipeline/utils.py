@@ -1,5 +1,6 @@
 """Collection of utility functions for the pipeline"""
 import json
+from typing import Iterable
 
 
 def read_question_ids(filename: str = "question_ids.json"):
@@ -16,17 +17,32 @@ def read_token(filename: str = "token"):
     return token.replace("\n", "")
 
 
-def extract_answers(response: dict):
+def extract_answers(query_response: dict, ids_to_fields: dict):
     """
     Extracts the answers from a Typeform formatted dict (single solved form)
     Arguments:
-        response (dict): Typeform's dict for a single solved form
+        query_response (dict): Typeform's dict containing all responses
+        ids_to_fields (dict): Connects question ids to corresponding fields
     Returns:
-        list containing the (formatted) answers to the form
+        dict containing the (formatted) answers to the form, in the shape of
+        {field_a: [answer_a, answer_b, ...],
+         field_b: [answer_a, answer_b, ...],...}.
+        If no answer was found at some point, then its answer is None, which
+        means that every list has the same length.
     """
-    final_answers = []
-    for question in response["answers"]:
-        final_answers.append(format_answer(question))
+    fields = [f for f in ids_to_fields.values()]
+    final_answers = {f: [] for f in fields}
+    for answer_set in query_response["items"]:
+        remaining_fields = set(fields)
+
+        for question in answer_set["answers"]:
+            field = ids_to_fields[question["field"]["id"]]
+            answer = format_answer(question)
+            final_answers[field].append(answer)
+            remaining_fields.discard(field)
+        for field in remaining_fields:
+            final_answers[field].append(None)
+
     return final_answers
 
 

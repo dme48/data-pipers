@@ -3,7 +3,6 @@ import json
 import pandas as pd
 from typing import Iterable
 from typeform import Typeform
-from utils import read_field_ids, read_token, extract_answers
 
 
 def fetch_typeform(login_filename: str = "login",

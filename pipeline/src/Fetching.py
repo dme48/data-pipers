@@ -7,16 +7,19 @@ from typeform import Typeform
 
 
 def fetch_typeform(login_filename: str = "login",
-                   field_ids_filename="question_ids.json") -> pd.DataFrame:
+                   fields_filename="fields.json") -> pd.DataFrame:
     """
     Fetches answers
+    Arguments:
+        login_filename: filename of the file with login information
+        fields_filename: filename of the field containing the expected fields
     """
-    ids_to_fields = read_field_ids(field_ids_filename)
+    expected_fields = read_field_ids(fields_filename)
     (token, form_id) = read_login(login_filename)
     responses = Typeform(token).responses
     query_result: dict = responses.list(form_id)
 
-    answers = extract_answers(query_result, ids_to_fields)
+    answers = extract_answers(query_result, expected_fields)
 
     return pd.DataFrame.from_dict(answers)
 
@@ -37,7 +40,7 @@ def read_login(filename: str):
     return login_fields[0:2]
 
 
-def extract_answers(query_response: dict, ids_to_fields: dict):
+def extract_answers(query_response: dict, fields: list):
     """
     Extracts the answers from a Typeform formatted dict (single solved form)
     Arguments:
@@ -50,13 +53,12 @@ def extract_answers(query_response: dict, ids_to_fields: dict):
         If no answer was found at some point, then its answer is None, which
         means that every list has the same length.
     """
-    fields = [f for f in ids_to_fields.values()]
     final_answers = {f: [] for f in fields}
     for answer_set in query_response["items"]:
         remaining_fields = set(fields)
 
         for question in answer_set["answers"]:
-            field = ids_to_fields[question["field"]["id"]]
+            field = question["field"]["ref"]
             answer = format_answer(question)
             final_answers[field].append(answer)
             remaining_fields.discard(field)

@@ -2,13 +2,13 @@ from surveymonkey.client import Client
 import json
 
 
-def load_login(filename: str = "login.json"):
+def load_login(filename: str = "login.json") -> dict:
     """Reads surveymonkey credentials from filename and returns them as dict"""
     with open(filename, "r") as f:
         login = json.load(f)
     return login
 
-def load_config(filename: str="form_config.json"):
+def load_config(filename: str="form_config.json") -> tuple:
     """
     Loads the config file at filename and returns a tuple containing its two
     dictionaries.

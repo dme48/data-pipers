@@ -1,4 +1,4 @@
 from src.typeform.fetching import fetch_typeform
+from src.survey_monkey.testing import fetch_monkey
 
-dataframe = fetch_typeform()
-print(dataframe)
+print(fetch_monkey())

@@ -45,7 +45,7 @@ def extract_answers(query_response: dict, fields: list):
     Extracts the answers from a Typeform formatted dict (single solved form)
     Arguments:
         query_response (dict): Typeform's dict containing all responses
-        ids_to_fields (dict): Connects question ids to corresponding fields
+        fields (list): list containing all the fields (questions) in the form
     Returns:
         dict containing the (formatted) answers to the form, in the shape of
         {field_a: [answer_a, answer_b, ...],

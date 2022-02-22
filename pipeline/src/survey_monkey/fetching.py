@@ -4,7 +4,30 @@ import json
 import pandas as pd
 
 
-def load_login(filename: str = "login.json") -> dict:
+def fetch_monkey(login_filename: str = "login.json",
+                 fields_filename: str = "form_config.json") -> pd.DataFrame:
+    """
+    Fetches answers
+    Arguments:
+        login_filename: filename of the file with login information
+        fields_filename: filename of the field containing the expected fields
+    """
+    login = load_login(login_filename)
+    config = load_config(fields_filename)
+
+    client = Client(
+        client_id=login["client_id"],
+        client_secret=login["client_secret"],
+        redirect_uri=login["redirect_uri"],
+        access_token=login["access_token"])
+
+    all_responses = client.get_survey_response_bulk(login["form_id"])
+
+    answers = extract_answers(all_responses, config)
+    return pd.DataFrame.from_dict(answers)
+
+
+def load_login(filename: str) -> dict:
     """Reads surveymonkey credentials from filename and returns them as dict"""
     path = os.path.dirname(os.path.realpath(__file__)) + "/" + filename
     with open(path, "r") as f:
@@ -12,7 +35,7 @@ def load_login(filename: str = "login.json") -> dict:
     return login
 
 
-def load_config(filename: str = "form_config.json") -> tuple:
+def load_config(filename: str) -> dict:
     """
     Loads the config file at filename and returns a tuple containing its two
     dictionaries.
@@ -21,14 +44,6 @@ def load_config(filename: str = "form_config.json") -> tuple:
     with open(path, "r") as f:
         config = json.load(f)
     return config
-
-
-def extract_questions(response):
-    questions = response["pages"][0]["questions"]
-    for question in questions:
-        id = question["id"]
-        answer = question["answers"]
-        print(answer)
 
 
 def extract_answers(query_response: dict, config: dict) -> dict:
@@ -75,19 +90,3 @@ def format_answer(answer: dict, field: str, id_to_choice: dict):
     }
     formater = FORMAT_GUIDE.get(field, FORMAT_GUIDE["default"])
     return formater(answer)
-
-
-def fetch_monkey():
-    login = load_login()
-    config = load_config()
-
-    client = Client(
-        client_id=login["client_id"],
-        client_secret=login["client_secret"],
-        redirect_uri=login["redirect_uri"],
-        access_token=login["access_token"])
-
-    all_responses = client.get_survey_response_bulk(login["form_id"])
-
-    answers = extract_answers(all_responses, config)
-    return pd.DataFrame.from_dict(answers)

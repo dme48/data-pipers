@@ -53,9 +53,35 @@ class MasterData:
 
     def get_typeform_data(self) -> pd.DataFrame:
         """Returns the data corresponding to Typeform as a panads DF"""
+        return pd.DataFrame.from_dict(self.typeform_data)
 
     def get_monkey_data(self) -> pd.DataFrame:
         """Returns the data corresponding to Survey Monkey as a panads DF"""
+        return pd.DataFrame.from_dict(self.monkey_data)
 
     def get_master_data(self) -> pd.DataFrame:
         """Retuns the combined results from all the sources"""
+        d1 = label_all(self.typeform_data, "typeform", "source")
+        d2 = label_all(self.monkey_data, "monkey", "source")
+        merged = {k: d1[k] + d2[k] for k in d1.keys()}
+        return pd.DataFrame.from_dict(merged)
+
+
+def label_all(d: dict, label: str, field: str) -> dict:
+    """
+    Takes a dictionary <d> with the following structure
+        string1: [object1, object2, object3, ..., objectN]
+        string2: [...]
+        ...
+    Then includes a new entry of name <field> containing a list of N <label>
+    strings. I.e. the return dict is
+        string1: [object1, object2, object3, ..., objectN]
+        string2: [...]
+        ...
+        <field>: [<label>, <label>, ..., <label>]
+    """
+    d_copy = d.copy()
+    random_key = iter(d_copy).__next__()
+    entry_count = len(d_copy[random_key])
+    d_copy[field] = [field] * entry_count
+    return d_copy

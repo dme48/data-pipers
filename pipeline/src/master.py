@@ -28,7 +28,7 @@ class MasterData:
 
     def update_typeform(self) -> None:
         """Updates the data corresponding to the Typeform surveys"""
-        if not config:
+        if not self.config:
             self.typeform_data = fetch_typeform()
             return
 
@@ -38,7 +38,7 @@ class MasterData:
 
     def update_monkey(self) -> None:
         """Updates the data corresponding to the Survey Monkey surveys"""
-        if not config:
+        if not self.config:
             self.monkey_data = fetch_monkey()
             return
 

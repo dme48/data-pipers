@@ -24,7 +24,7 @@ def fetch_monkey(login_filename: str = "login.json",
     all_responses = client.get_survey_response_bulk(login["form_id"])
 
     answers = extract_answers(all_responses, config)
-    return pd.DataFrame.from_dict(answers)
+    return answers
 
 
 def load_login(filename: str) -> dict:

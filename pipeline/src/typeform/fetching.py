@@ -20,8 +20,7 @@ def fetch_typeform(login_filename: str = "login",
     query_result: dict = responses.list(form_id)
 
     answers = extract_answers(query_result, expected_fields)
-
-    return pd.DataFrame.from_dict(answers)
+    return answers
 
 
 def read_field_ids(filename: str):
@@ -86,6 +85,7 @@ def format_answer(question):
     answer = question[answer_type]
 
     return FORMAT_GUIDE[answer_type](answer)
+
 
 if __name__ == "__main__":
     print(fetch_typeform())

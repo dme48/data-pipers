@@ -2,8 +2,8 @@
 Script containing the MasterData class and related functions
 """
 import pandas as pd
-from typeform import fetch_typeform
-from survey_monkey import fetch_monkey
+from src.typeform.fetching import fetch_typeform
+from src.survey_monkey.fetching import fetch_monkey
 
 
 class MasterData:

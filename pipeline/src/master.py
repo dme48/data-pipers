@@ -83,5 +83,5 @@ def label_all(d: dict, label: str, field: str) -> dict:
     d_copy = d.copy()
     random_key = iter(d_copy).__next__()
     entry_count = len(d_copy[random_key])
-    d_copy[field] = [field] * entry_count
+    d_copy[field] = [label] * entry_count
     return d_copy

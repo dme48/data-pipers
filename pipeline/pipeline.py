@@ -1,7 +1,6 @@
-from src.typeform.fetching import fetch_typeform
-from src.survey_monkey.fetching import fetch_monkey
+from src.master import MasterData
 
-print("Typeform fetch:")
-print(fetch_typeform())
-print("Survey monkey fetch:")
-print(fetch_monkey())
+master = MasterData()
+
+pd_df = master.get_master_data()
+print(pd_df)

@@ -17,7 +17,7 @@ def fetch_typeform(login_filename: str = "login.json",
     expected_fields = read_field_ids(fields_filename)
     login = load_login(login_filename)
     responses = Typeform(login["token"]).responses
-    query_result: dict = responses.list(login["form_id"])
+    query_result: dict = responses.list(login["form_id"], pageSize=1000)
 
     answers = extract_answers(query_result, expected_fields)
     return answers

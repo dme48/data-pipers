@@ -6,7 +6,7 @@ from typing import Iterable
 from typeform import Typeform
 
 
-def fetch_typeform(login_filename: str = "login",
+def fetch_typeform(login_filename: str = "login.json",
                    fields_filename="fields.json") -> pd.DataFrame:
     """
     Fetches answers
@@ -15,13 +15,12 @@ def fetch_typeform(login_filename: str = "login",
         fields_filename: filename of the field containing the expected fields
     """
     expected_fields = read_field_ids(fields_filename)
-    (token, form_id) = read_login(login_filename)
-    responses = Typeform(token).responses
-    query_result: dict = responses.list(form_id)
+    login = load_login(login_filename)
+    responses = Typeform(login["token"]).responses
+    query_result: dict = responses.list(login["form_id"], pageSize=1000)
 
     answers = extract_answers(query_result, expected_fields)
-
-    return pd.DataFrame.from_dict(answers)
+    return answers
 
 
 def read_field_ids(filename: str):
@@ -32,12 +31,12 @@ def read_field_ids(filename: str):
     return question_ids
 
 
-def read_login(filename: str):
-    """Reads the login file (filename) and returns the token and the form ID"""
+def load_login(filename: str) -> dict:
+    """Reads typeform credentials from filename and returns them as dict"""
     path = os.path.dirname(os.path.realpath(__file__)) + "/" + filename
     with open(path, "r") as f:
-        login_fields = f.read().split("\n")
-    return login_fields[0:2]
+        login = json.load(f)
+    return login
 
 
 def extract_answers(query_response: dict, fields: list):
@@ -86,6 +85,7 @@ def format_answer(question):
     answer = question[answer_type]
 
     return FORMAT_GUIDE[answer_type](answer)
+
 
 if __name__ == "__main__":
     print(fetch_typeform())

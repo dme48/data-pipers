@@ -1,5 +1,6 @@
 import pandas as pd
 from src.master import MasterData
+from src.dataViz import DataViz
 
 
 def force_numerical(df: pd.DataFrame, col_name: str):
@@ -14,4 +15,7 @@ pd_df = master.get_master_data()
 
 # Changes original data
 force_numerical(pd_df, "birth_year")
-print(pd_df)
+
+#Reformats the data again and produces image files
+DataViz(pd_df)  
+

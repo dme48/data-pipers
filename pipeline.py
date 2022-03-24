@@ -22,5 +22,4 @@ force_numerical(pd_df, "birth_year")
 #Reformats the data again and produces image files
 DataViz(pd_df)  
 
-#output the csv - was used earlier in project
-#pd_df.to_csv('/Users/jen/Desktop/DataGlacier/Pipers/MasterResults.csv', index = False)
+

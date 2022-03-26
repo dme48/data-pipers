@@ -92,52 +92,62 @@ class DataViz:
         #create modified df with outlier and missing age entries removed
         dfa = df.query('birth_year > 1900 and birth_year < 2015')
 
-
+        
         #Create image files
+
         #clear any plots and set params
         plt.close('all')
         fig, ax =plt.subplots(1,1) 
         fig.set_size_inches(10, 10)
 
-        #Create How Worried count plot
+        #Create plot for How Worried levels (count at each level)
         A=df['how_worried']
         Anan1=A[~np.isnan(A)] # Remove the NaNs
         p1 = sns.countplot(Anan1, color = 'cornflowerblue').set_title("How Worried Are You about Climate Change?")
-        #p1.set(xlabel = 'How Worried score', ylabel = 'Count') 
         fig.savefig('Worried.jpg')  
-        
-        #Clear earlier plot set params
+
+        #Plot the mean values of how worried, by age
+        plt.close('all')
+        fig, ax =plt.subplots(1,1) 
+        fig.set_size_inches(12, 12)
+        fig.suptitle('Mean Value of How Worried, by Age Group', fontsize = 22)
+        w = dfa.groupby(dfa.BYbins).how_worried.mean().plot.bar(color = 'cornflowerblue')
+        w.set(xlabel = "Age - Birth Year", ylabel = 'Mean Value of How Worried' )
+        fig.savefig('WorriedByAge.jpg')  
+
+
+
+        #Create plot for 'will to improve' in coming 12 months levels (counts)
         plt.close('all')
         fig, ax =plt.subplots(1,1) 
         fig.set_size_inches(10, 10)
-        
-        
         B=df['will_to_improve']
         Anan2=B[~np.isnan(A)] # Remove the NaNs
         p2 = sns.countplot(Anan2, color = 'cornflowerblue').set_title("Do You Plan to Do More About Climate Change?")
         fig.savefig('Will to Improve.jpg') 
     
-        #Clear earlier plot set params
+
+        #Counts of Assessments/levels for Business Leader performance
         plt.close('all')
         fig, ax =plt.subplots(1,1) 
         fig.set_size_inches(10, 10)
-
-        #Counts of Assessments: Business Leader and Govt Leader performances
         C=df['business_leader_involvement']
         Anan3=C[~np.isnan(C)] # Remove the NaNs
-        p3 = sns.countplot(Anan3, color = 'seagreen').set_title("Assessment of Political Leaders on Climate Change")
+        p3 = sns.countplot(Anan3, color = 'seagreen').set_title("Assessment of Business Leaders on Climate Change")
         fig.savefig('BussLeaders.jpg')
 
+
+        #Counts of Assessments/levels for Political Leader performance
         #Clear earlier plot set params
         plt.close('all')
         fig, ax =plt.subplots(1,1) 
         fig.set_size_inches(10, 10)
-
         D=df['political_leader_involvement']
         Anan4=D[~np.isnan(D)] # Remove the NaNs
-        p4 = sns.countplot(Anan4, color = 'slategrey').set_title("Assessment of Business Leaders on Climate Change")
+        p4 = sns.countplot(Anan4, color = 'slategrey').set_title("Assessment of Government Leaders on Climate Change")
         fig.savefig('GovtLeaders.jpg') 
         
+        #Side by side plots, less meat or dairy ny how worried and by age range
         #Clear earlier plot set params
         plt.close('all')
         fig, ax =plt.subplots(1,2) 
@@ -145,16 +155,29 @@ class DataViz:
         fig.suptitle('Consumed less Meat or Dairy, by How Worried and by Age', fontsize = 22)
         custom_ylim = (0, 1) # set y-limits the same on both plots
         plt.setp(ax, ylim=custom_ylim)
-
-        # less meat and dairy by age and how worried
         p5 = sns.barplot(x = 'how_worried', y = 'less_meat_dairy', ci = None, data = dfa, ax = ax[0])
         p5.set(xlabel='How Worried', ylabel = 'Consumed Less Meat and Dairy')
         p6 = sns.barplot(x = 'BYbins', y = 'less_meat_dairy', ci = None, data = dfa, ax = ax[1])
         p6.set(xlabel='Age Range', ylabel = 'Consumed Less Meat and Dairy')
         fig.savefig('MeatDairy.jpg') 
         
+        
+        #side by side plots, Voted with Wallet, by age and by how worred
+        #Clear earlier plot set params
+        plt.close('all')
+        fig, ax =plt.subplots(1,2) 
+        fig.set_size_inches(20, 10)
+        fig.suptitle('Supported Businesses Practicing Sustainability, by How Worried and by Age', fontsize = 22)
+        custom_ylim = (0, 1) # set y-limits the same on both plots
+        plt.setp(ax, ylim=custom_ylim)
+        p5 = sns.barplot(x = 'how_worried', y = 'wallet_vote', ci = None, data = dfa, ax = ax[0])
+        p5.set(xlabel='How Worried', ylabel = 'Wallet Vote - supported businesses practicing sustainability')
+        p6 = sns.barplot(x = 'BYbins', y = 'wallet_vote', ci = None, data = dfa, ax = ax[1])
+        p6.set(xlabel='Age Range', ylabel = 'Wallet Vote - supported businesses practicing sustainability')
+        fig.savefig('WalletWorriedAge.jpg') 
 
-
+        
+        #side by side plots, drove/flew less by age and how worried
         #Clear earlier plot set params
         plt.close('all')
         fig, ax =plt.subplots(1,2) 
@@ -162,13 +185,29 @@ class DataViz:
         fig.suptitle('Drove or Flew Less, by How Worried and by Age', fontsize = 22)
         custom_ylim = (0, 1)   #set y limits the same on both plots
         plt.setp(ax, ylim=custom_ylim)
-
-        #less flying and driving by age and how worried
         p7 = sns.barplot(x = 'how_worried', y = 'drive_less', ci = None, data = dfa, ax = ax[0])
         p7.set(xlabel='How Worried', ylabel = 'Drove and Flew Less')
         p8 = sns.barplot(x = 'BYbins', y = 'drive_less', ci = None, data = dfa, ax = ax[1])
         p8.set(xlabel='Age Range', ylabel = 'Drove and Flew Less') 
         fig.savefig('drivingflying.jpg') 
         
+        
+        #side by side plots, posted to social media vs wrote to govt by age
+        #Clear earlier plot set params
+        plt.close('all')
+        fig, ax =plt.subplots(1,2) 
+        fig.set_size_inches(20, 10)
+        fig.suptitle('Talked or Posted about Climate Change versus Wrote to Govt Leaders, by Age', fontsize = 22)
+        custom_ylim = (0, 1)   #set y limits the same on both plots
+        plt.setp(ax, ylim=custom_ylim)
+        p7 = sns.barplot(x = 'BYbins', y = 'talked_climate', ci = None, data = dfa, ax = ax[0])
+        p7.set(xlabel='BYbins', ylabel = 'Talked or Posted on Social Media')
+        p8 = sns.barplot(x = 'BYbins', y = 'write_govt', ci = None, data = dfa, ax = ax[1])
+        p8.set(xlabel='Age Range', ylabel = 'Wrote to government leaders') 
+        fig.savefig('socialGovt.jpg') 
+
+        import dataframe_image as dfi
+        #produce and save image of table of basic statistics on this data 
+        dfi.export(dfa.describe(), 'describe.jpg')
 
         return
